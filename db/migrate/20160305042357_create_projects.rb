@@ -9,6 +9,7 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.string :ruby_version, comment: 'Ruby version(.ruby-version) in the project'
       t.string :rails_version, comment: 'Rails version(Gemfile.lock) in the project'
       t.json :brakeman_json, comment: 'Brakeman security check result in the project'
+      t.text :error_message, comment: 'Error Message in Process'
 
       t.timestamps
     end

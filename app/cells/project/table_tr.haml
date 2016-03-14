@@ -1,0 +1,8 @@
+%tr
+  %td= link_to path_with_namespace, web_url, target: '_blank'
+  %td= l(last_activity_at, format: :long)
+  %td= ruby_version
+  %td= rails_version
+  %td= message
+  %td= link_to 'Show', model
+  %td= link_to 'Edit', edit_project_path(model)

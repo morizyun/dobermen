@@ -1,5 +1,10 @@
 class Project < ApplicationRecord
   # ------------------------------------------------------------------
+  # Attributes
+  # ------------------------------------------------------------------
+  attribute :brakeman_json, :brakeman_json
+
+  # ------------------------------------------------------------------
   # Scope
   # ------------------------------------------------------------------
   scope :active_order, -> { order(last_activity_at: :desc) }
@@ -10,7 +15,8 @@ class Project < ApplicationRecord
   # Insert or Update
   # @param [Gitlab::ObjectifiedHash] hash
   def self.upsert!(hash)
-    self.where(web_url: hash[:web_url]).first_or_initialize.update_attributes(_convert_attributes(hash))
+    attr = _convert_attributes(hash)
+    self.where(web_url: attr[:web_url]).first_or_initialize.update_attributes(attr)
   end
 
   private

@@ -74,6 +74,7 @@ capybara-*.html
 /public/system
 /coverage/
 /spec/tmp
+/spec/services/*_real_spec.rb
 **.orig
 rerun.txt
 pickle-email-*.html
@@ -174,3 +175,5 @@ develop.md
 
 # Ignore application configuration
 /config/application.yml
+
+omo_sample.rb

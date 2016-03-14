@@ -5,12 +5,11 @@
     %tr
       %th Name
       %th Last Activity
+      %th Ruby Version
+      %th Rails Version
+      %th Message
       %th{ colspan: 2 } Action
 
   %tbody
     - @projects.each do |project|
-      %tr
-        %td= link_to project.path_with_namespace, project.web_url, target: '_blank'
-        %td= l(project.last_activity_at, format: :long)
-        %td= link_to 'Show', project
-        %td= link_to 'Edit', edit_project_path(project)
+      = cell(:project, project).(:table_tr)

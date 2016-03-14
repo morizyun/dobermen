@@ -2,9 +2,6 @@ class GitlabService
   # ------------------------------------------------------------------
   # Constants
   # ------------------------------------------------------------------
-  # TODO To enable change (Having model)
-  API_ENDPOINT = ENV['GITLAB_API_ENDPOINT'].freeze
-  PRIVATE_TOKEN = ENV['GITLAB_PRIVATE_TOKEN'].freeze
   PER_PAGE = 10.freeze
 
   # ------------------------------------------------------------------
@@ -12,8 +9,17 @@ class GitlabService
   # ------------------------------------------------------------------
   # Get all GitLab Projects
   # @return [Array<Gitlab::ObjectifiedHash>]
-  def self.all_projects
-    _get_all_projects
+  def self.all_projects(type:)
+    # TODO To enable change (Having model)
+    Gitlab.endpoint = ENV['GITLAB_API_ENDPOINT']
+    Gitlab.private_token = ENV['GITLAB_PRIVATE_TOKEN']
+
+    if type == :admin
+      _get_all_projects
+    else
+      _get_visible_projects
+    end
+
   end
 
   private
@@ -21,17 +27,23 @@ class GitlabService
   # Private Class Methods
   # ------------------------------------------------------------------
   def self._get_all_projects
-    Gitlab.endpoint = API_ENDPOINT
-    Gitlab.private_token = PRIVATE_TOKEN
-
     # listing all user name
-    user_names = Gitlab.users.map(&:name)
+    user_names = Gitlab.users.map(&:username)
 
     # get all projects
-    user_names.map do |name|
+    projects = user_names.map do |name|
       Gitlab.sudo = name
       Gitlab.projects(per_page: PER_PAGE).auto_paginate
-    end.flatten.uniq_by { |_| _.id }
+    end.flatten.uniq { |_| _.id }
+
+    # reset sudo
+    Gitlab.sudo = nil
+
+    return projects
+  end
+
+  def self._get_visible_projects
+    Gitlab.projects(per_page: PER_PAGE).auto_paginate
   end
 
 end

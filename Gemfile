@@ -74,6 +74,7 @@ gem 'hashie'
 
 # Presenter Layer Helper
 gem 'cells'
+gem 'cells-haml'
 
 # Table(Migration) Comment
 gem 'migration_comments'
@@ -89,6 +90,12 @@ gem 'gitlab'
 
 # configuration using ENV
 gem 'figaro'
+
+# A static analysis security vulnerability scanner
+gem 'brakeman'
+
+# Universal capture of stdout and stde
+gem 'systemu'
 
 # ============================
 # Environment Group

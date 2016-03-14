@@ -7,12 +7,16 @@ class GitService
   def self.find_info(project)
     path = _prepare_dir(project)
     _clone_repository(project: project, path: path)
+    json = _check_by_brakeman(path)
 
     {
-        ruby_version: _get_ruby_version(path),
-        rails_version: _get_rails_version(path),
-        brakeman_json: _check_by_brakeman(path)
+        ruby_version: json[:ruby_version],
+        rails_version: json[:rails_version],
+        brakeman_json: json
     }
+  rescue => e
+    puts "Error: #{e.message} [GitService.find_info]"
+    { error_message: e.message }
   ensure
     _remove_dir(path)
   end
@@ -23,7 +27,9 @@ class GitService
   # ------------------------------------------------------------------
   # Clone git repository to temporary folder
   def self._clone_repository(project:, path:)
-    system("git clone #{project.ssh_url_to_repo} #{path}")
+    # TODO To enable change (Having model)
+    # NOTE: using ssh key for each user => http://goo.gl/ndFEm
+    systemu("git clone #{project.ssh_url_to_repo} #{path}")
   end
 
   # Prepare directory for cloning git repository
@@ -39,25 +45,13 @@ class GitService
     FileUtils.rm_r(path)
   end
 
-  # Get Ruby Version
-  def self._get_ruby_version(path)
-    rv_path = [path, '.ruby-version'].join('/')
-    text = File.read(rv_path).to_s rescue ''
-    text =~ /([0-9\.]{2,})/ ? $1 : text
-  end
-
-  # Get Rails Version
-  def self._get_rails_version(path)
-    gem_lock_path = [path, 'Gemfile.lock'].join('/')
-    text = File.read(gem_lock_path).to_s rescue ''
-    text =~ /\s+rails\s\((.*)\)/ ? $1 : nil
-  end
-
   # Security Check By Brakeman
   def self._check_by_brakeman(path)
     result_json = [path, 'brakeman_result.json'].join('/')
-    system("bundle exec brakeman #{path} -o #{result_json}")
-    JSON.parse(File.read(result_json))
+    status, stdout, stderr = systemu("bundle exec brakeman #{path} -o #{result_json}")
+    raise StandardError.new(stderr) unless status.success? # Brakeman error
+
+    JSON.parse(File.read(result_json)).try(:[], 'scan_info').try(:symbolize_keys)
   end
 
 end

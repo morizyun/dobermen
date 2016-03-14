@@ -87,9 +87,12 @@ Rails.application.configure do
   # Exception Notifier
   Rails.application.config.middleware.use ExceptionNotification::Rack,
     :email => {
-      :email_prefix => "[version_admin] ",
+      :email_prefix => "[dobermen] ",
       :sender_address => %{"notifier" <merii.ken@gmail.com>},
       :exception_recipients => %w{merii.ken@gmail.com}
     }
+
+  # Sanitizing parameter
+  config.filter_parameters += [/(password|private_token|api_endpoint)/i]
 
 end
