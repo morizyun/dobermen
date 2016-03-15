@@ -5,5 +5,8 @@ FactoryGirl.define do
     ssh_url_to_repo { "git@example.com:test_user/rails-sample#{Random.rand(10000)}.git" }
     http_url_to_repo { "https://example.com/test_user/rails-sample#{Random.rand(10000)}.git" }
     last_activity_at { Random.rand(100).days.ago }
+    ruby_version { "2.#{Random.rand(10)}.#{Random.rand(10)}" }
+    rails_version { "5.#{Random.rand(10)}.#{Random.rand(10)}" }
+    email { Faker::Internet.email }
   end
 end

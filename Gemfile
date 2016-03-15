@@ -97,6 +97,9 @@ gem 'brakeman'
 # Universal capture of stdout and stde
 gem 'systemu'
 
+# Simple and safe way to dynamically render error pages
+gem 'rambulance'
+
 # ============================
 # Environment Group
 # ============================
@@ -151,6 +154,9 @@ group :test do
 
   # Cleaning test data
   gem 'database_rewinder'
+
+  # This gem brings back assigns to your controller tests
+  gem 'rails-controller-testing'
 end
 
 group :production do

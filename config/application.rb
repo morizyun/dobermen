@@ -32,5 +32,8 @@ module Dobermen
       g.assets false
       g.helper false
     end
+
+    # auto loading
+    config.autoload_paths += %W(#{config.root}/app/models/types)
   end
 end

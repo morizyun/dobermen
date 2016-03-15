@@ -10,18 +10,20 @@ RSpec.describe GitService do
                              http_url_to_repo: 'http://example.com/root/rails-sample.git',
                              last_activity_at: 10.days.ago) }
 
+      let(:expect_json) { BrakemanJson.new({ scan_info: {
+          ruby_version: '2.3.0',
+          rails_version: '5.0.0.beta3',
+          check: { key: 'value' }
+      } }) }
+
       it 'get ruby/rails version and brakeman result' do
         allow(described_class).to receive(:_clone_repository).and_return('tmp')
-        allow(described_class).to receive(:_check_by_brakeman).and_return({ ruby_version: '2.3.0',
-                                                                            rails_version: '5.0.0.beta3',
-                                                                            check: { key: 'value' } })
+        allow(described_class).to receive(:_check_by_brakeman).and_return(expect_json)
         info = described_class.find_info(project)
 
         expect(info[:ruby_version]).to eq '2.3.0'
         expect(info[:rails_version]).to eq '5.0.0.beta3'
-        expect(info[:brakeman_json]).to eq({ ruby_version: '2.3.0',
-                                             rails_version: '5.0.0.beta3',
-                                             check: { key: 'value' } })
+        expect(info[:brakeman_json]).to eq(expect_json)
       end
     end
 

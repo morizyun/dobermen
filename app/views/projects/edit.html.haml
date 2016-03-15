@@ -1,7 +1,44 @@
-%h1 Editing project
+%h1= "#{@project.path_with_namespace} - detail"
 
-= render 'form'
+%table.table.table-bordered.table-striped
+  %tr
+    %th URL
+    %td= link_to @project.web_url, @project.web_url,target: '_blank'
+  %tr
+    %th Last Activity
+    %td= l(@project.last_activity_at, format: :long)
+  %tr
+    %th Ruby Version
+    %td= @project.ruby_version
+  %tr
+    %th Rails Version
+    %td= @project.rails_version
+  - if @project.error_message?
+    %tr
+      %th Brakeman Message
+      %td= @project.error_message
+  - if @project.brakeman_json?
+    %tr
+      %th Brakeman Summary
+      %td= @project.brakeman_json.summary
+  - if @project.brakeman_json.try(:has_warning?)
+    %tr
+      %th Brakeman Warnings
+      %td
+        %table.table.table-bordered
+          %tr
+            %th Confidence
+            %th Type
+            %th Message
+            %th Link
+          - @project.brakeman_json.warnings.each do |warn|
+            %tr{ class: warn.danger? ? 'bg-danger' : '' }
+              %th= warn.confidence
+              %td= warn.type
+              %td= link_to warn.message, warn.reference_url, target: '_blank'
+              %td= link_to warn.path, "#{@project.web_url}/tree/master/#{warn.path}", target: '_blank'
+  %tr
+    %th Email for notification
+    %td= render 'form'
 
-= link_to 'Show', @project
-\|
-= link_to 'Back', projects_path
+= link_to 'Project List', projects_path

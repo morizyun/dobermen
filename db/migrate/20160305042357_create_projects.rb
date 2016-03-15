@@ -10,6 +10,7 @@ class CreateProjects < ActiveRecord::Migration[5.0]
       t.string :rails_version, comment: 'Rails version(Gemfile.lock) in the project'
       t.json :brakeman_json, comment: 'Brakeman security check result in the project'
       t.text :error_message, comment: 'Error Message in Process'
+      t.string :email, comment: 'Notification to project owner'
 
       t.timestamps
     end

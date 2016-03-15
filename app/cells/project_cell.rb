@@ -17,11 +17,7 @@ class ProjectCell < Cell::ViewModel
   private
 
   def message
-    if error_message.present?
-      error_message
-    else
-      "security_warnings => #{brakeman_json.warnings}" if brakeman_json.has_warnings?
-    end
+    error_message.present? ? error_message : brakeman_json.try(:summary)
   end
 
 end

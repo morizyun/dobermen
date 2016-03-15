@@ -176,4 +176,6 @@ develop.md
 # Ignore application configuration
 /config/application.yml
 
+# Private file
 omo_sample.rb
+todo_list.md

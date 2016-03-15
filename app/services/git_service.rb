@@ -10,8 +10,8 @@ class GitService
     json = _check_by_brakeman(path)
 
     {
-        ruby_version: json[:ruby_version],
-        rails_version: json[:rails_version],
+        ruby_version: json.ruby_version,
+        rails_version: json.rails_version,
         brakeman_json: json
     }
   rescue => e
@@ -51,7 +51,7 @@ class GitService
     status, stdout, stderr = systemu("bundle exec brakeman #{path} -o #{result_json}")
     raise StandardError.new(stderr) unless status.success? # Brakeman error
 
-    JSON.parse(File.read(result_json)).try(:[], 'scan_info').try(:symbolize_keys)
+    BrakemanJson.new(JSON.parse(File.read(result_json)))
   end
 
 end
