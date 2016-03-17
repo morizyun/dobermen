@@ -27,14 +27,35 @@ class GitService
   # ------------------------------------------------------------------
   # Clone git repository to temporary folder
   def self._clone_repository(project:, path:)
-    # TODO To enable change (Having model)
-    # NOTE: using ssh key for each user => http://goo.gl/ndFEm
+    if _has_ssh_key_setting?
+      _clone_with_setting_key(project: project, path: path)
+    else
+      _clone_with_system_key(project: project, path: path)
+    end
+  end
+
+  def self._clone_with_setting_key(project:, path:)
+    ssh_key_path = Rails.root.join('tmp/ssh_key')
+    begin
+      systemu("echo '#{Setting.where(id: 1).first.try(:ssh_key)}' > #{ssh_key_path}")
+      # TODO be able to get git repository....
+      systemu("ssh-agent bash -c 'ssh-add #{ssh_key_path}; git clone #{project.ssh_url_to_repo} #{path}'")
+    ensure
+      FileUtils.rm_r(ssh_key_path)
+    end
+  end
+
+  def self._clone_with_system_key(project:, path:)
     systemu("git clone #{project.ssh_url_to_repo} #{path}")
+  end
+
+  def self._has_ssh_key_setting?
+    Setting.where(id: 1).first.try(:ssh_key).present?
   end
 
   # Prepare directory for cloning git repository
   def self._prepare_dir(project)
-    tmp_path = Rails.root.join("tmp/git_checkout/#{Rails.env}/#{project.path_with_namespace}#{Random.rand(10000)}").to_s
+    tmp_path = Rails.root.join("tmp/git_checkout/#{Rails.env}/#{project.id}/#{project.path_with_namespace}").to_s
     FileUtils.mkdir_p(tmp_path) unless FileTest.exist?(tmp_path)
 
     return tmp_path

@@ -1,0 +1,9 @@
+= simple_form_for(@setting, url: setting_update_path, method: :put) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :email
+    = f.input :ssh_key, input_html: { rows: 28 }
+
+  .form-actions
+    = f.button :submit, 'Save'

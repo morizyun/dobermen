@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305042357) do
+ActiveRecord::Schema.define(version: 20160315230428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,5 +32,12 @@ ActiveRecord::Schema.define(version: 20160305042357) do
   end
 
   add_index "projects", ["web_url"], name: "index_projects_on_web_url", unique: true, using: :btree
+
+  create_table "settings", force: :cascade do |t|
+    t.string   "email",      null: false, comment: "Notification to all project information"
+    t.text     "ssh_key",    null: false, comment: "SSH Key information"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
