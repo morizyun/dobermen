@@ -1,0 +1,16 @@
+%h1 Listing setting_gitlabs
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Base url
+      %th
+      %th
+
+  %tbody
+    - @setting_gitlabs.each do |setting_gitlab|
+      = cell(:setting_gitlab, setting_gitlab).(:table_tr)
+
+%br
+
+= link_to 'New Setting gitlab', new_setting_gitlab_path, class: 'btn btn-default'

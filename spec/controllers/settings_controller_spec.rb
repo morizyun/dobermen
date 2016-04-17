@@ -20,17 +20,17 @@ RSpec.describe SettingsController, :type => :controller do
 
   describe 'PUT update' do
     describe 'with valid params' do
-      let(:new_attributes) { { email: 'new_email@example.com', ssh_key: 'new_ssh_key' } }
+      let(:new_attributes) { { email: 'new_email@example.com' } }
 
       it 'updates the requested setting' do
-        setting = create(:setting, id: 1, email: 'exist_email@example.com', ssh_key: 'exist_ssh_key')
+        setting = create(:setting, id: 1, email: 'exist_email@example.com')
         process :update, method: :put, params: { setting: new_attributes }
         setting.reload
         expect(assigns(:setting).email).to eq('new_email@example.com')
       end
 
       it 'redirects to the setting' do
-        create(:setting, id: 1, email: 'exist_email@example.com', ssh_key: 'exist_ssh_key')
+        create(:setting, id: 1, email: 'exist_email@example.com')
         process :update, method: :put, params: { setting: new_attributes }
         expect(response).to redirect_to(setting_show_path)
       end

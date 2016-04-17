@@ -18,6 +18,9 @@ class SettingsController < ApplicationController
   end
 
   private
+  # ------------------------------------------------------------------
+  # Private Methods
+  # ------------------------------------------------------------------
   # Never trust parameters from the scary internet, only allow the white list through.
   def admin_params
     params.require(:setting).permit(:email, :ssh_key)

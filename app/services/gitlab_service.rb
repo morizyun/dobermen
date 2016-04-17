@@ -7,26 +7,10 @@ class GitlabService
   # ------------------------------------------------------------------
   # Public Class Methods
   # ------------------------------------------------------------------
-  # Get all GitLab Projects
-  # @return [Array<Gitlab::ObjectifiedHash>]
-  def self.all_projects(type:)
-    # TODO To enable change (Having model)
-    Gitlab.endpoint = ENV['GITLAB_API_ENDPOINT']
-    Gitlab.private_token = ENV['GITLAB_PRIVATE_TOKEN']
+  # Get all projects on GitLab by using admin role
+  def self.get_all_projects(setting)
+    _set_connect_settings(setting)
 
-    if type == :admin
-      _get_all_projects
-    else
-      _get_visible_projects
-    end
-
-  end
-
-  private
-  # ------------------------------------------------------------------
-  # Private Class Methods
-  # ------------------------------------------------------------------
-  def self._get_all_projects
     # listing all user name
     user_names = Gitlab.users.map(&:username)
 
@@ -42,8 +26,20 @@ class GitlabService
     return projects
   end
 
-  def self._get_visible_projects
+  # Get all visible projects on GitLab
+  def self.get_visible_projects(setting)
+    _set_connect_settings(setting)
+
     Gitlab.projects(per_page: PER_PAGE).auto_paginate
   end
 
+  private
+  # ------------------------------------------------------------------
+  # Private Class Methods
+  # ------------------------------------------------------------------
+  # Set settings
+  def self._set_connect_settings(setting)
+    Gitlab.endpoint = setting.endpoint
+    Gitlab.private_token = setting.private_token
+  end
 end

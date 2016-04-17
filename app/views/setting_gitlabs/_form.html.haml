@@ -1,0 +1,10 @@
+= simple_form_for(@setting_gitlab) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :base_url
+    = f.input :ssh_key, input_html: { rows: 28 }
+    = f.input :private_token
+
+  .form-actions
+    = f.button :submit

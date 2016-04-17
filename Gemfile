@@ -54,7 +54,6 @@ gem 'bootswatch-rails'
 gem 'font-awesome-rails'
 
 # Fast Haml
-gem 'faml'
 gem 'haml-rails'
 
 # Form Builders

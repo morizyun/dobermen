@@ -1,0 +1,12 @@
+%table.table.table-bordered
+  %tr
+    %th Confidence
+    %th Type
+    %th Message
+    %th Link
+  - brakeman_json.warnings.each do |warn|
+    %tr{ class: warn_class(warn) }
+      %th= warn.confidence
+      %td= warn.type
+      %td= link_to warn.message, warn.reference_url, target: '_blank'
+      %td= link_to warn.path, "#{web_url_with_domain}/tree/master/#{warn.path}", target: '_blank'

@@ -1,5 +1,10 @@
 class Project < ApplicationRecord
   # ------------------------------------------------------------------
+  # Associations
+  # ------------------------------------------------------------------
+  belongs_to :setting_gitlab, optional: true
+
+  # ------------------------------------------------------------------
   # Attributes
   # ------------------------------------------------------------------
   attribute :brakeman_json, :brakeman_json
@@ -14,14 +19,33 @@ class Project < ApplicationRecord
   # ------------------------------------------------------------------
   # Insert or Update
   # @param [Gitlab::ObjectifiedHash] hash
-  def self.upsert!(hash)
+  # @param [SettingGitLab] setting
+  def self.upsert_by_gitlab!(hash, setting)
     attr = _convert_attributes(hash)
+    attr.merge!(setting_gitlab_id: setting.id)
     self.where(web_url: attr[:web_url]).first_or_initialize.update_attributes(attr)
+  end
+
+  # ------------------------------------------------------------------
+  # Public Instance Methods
+  # ------------------------------------------------------------------
+  # SSH repository URL which replaced of domain name
+  # @return [String]
+  def ssh_url_with_domain
+    domain = self.setting_gitlab.try(:domain)
+    domain.present? ? ssh_url_to_repo.gsub(/([:\/@])localhost([:\/])/) { "#{$1}#{domain}#{$2}" } : ssh_url_to_repo
+  end
+
+  # Web page URL which replaced of domain name
+  # @return [String]
+  def web_url_with_domain
+    domain = self.setting_gitlab.try(:domain)
+    domain.present? ? web_url.gsub(/\/localhost([:\/])/) { "/#{domain}#{$1}" } : web_url
   end
 
   private
   # ------------------------------------------------------------------
-  # Public Class Methods
+  # Private Class Methods
   # ------------------------------------------------------------------
   # Gitlab::ObjectifiedHash => attributes
   # @param [Gitlab::ObjectifiedHash] hash

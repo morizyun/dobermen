@@ -1,8 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Project, :type => :model do
-  describe '.upsert!' do
+RSpec.describe Project, type: :model do
+  describe '.upsert_by_gitlab!' do
     let(:key_web_url) { 'https://example.com/root/rails-sample' }
+    let(:setting) { create(:setting_gitlab) }
     let(:in_hash) {
       {
           path_with_namespace: 'test/rails-sample',
@@ -18,7 +19,7 @@ RSpec.describe Project, :type => :model do
 
       it 'updating record are successful' do
         Timecop.freeze(Time.zone.now)
-        described_class.upsert!(in_hash)
+        described_class.upsert_by_gitlab!(in_hash, setting)
 
         record = described_class.where(web_url: key_web_url).first
         expect(record.path_with_namespace).to eq 'test/rails-sample'
@@ -32,7 +33,7 @@ RSpec.describe Project, :type => :model do
     context 'when not existing record' do
       it 'inserting record are successful' do
         Timecop.freeze(Time.zone.now)
-        described_class.upsert!(in_hash)
+        described_class.upsert_by_gitlab!(in_hash, setting)
 
         record = described_class.where(web_url: key_web_url).first
         expect(record.path_with_namespace).to eq 'test/rails-sample'
@@ -43,4 +44,42 @@ RSpec.describe Project, :type => :model do
       end
     end
   end
+
+  # ------------------------------------------------------------------
+  # Public Instance Methods
+  # ------------------------------------------------------------------
+  describe '#ssh_url_with_domain' do
+    let(:project) { build(:project, ssh_url_to_repo: 'ssh://git@localhost:10022/test/project.git', setting_gitlab: setting_gitlab) }
+    subject { project.ssh_url_with_domain }
+
+    context 'have setting_gitlab with domain setting' do
+      let(:setting_gitlab) { create(:setting_gitlab, base_url: 'http://server_domain.sample:119229/') }
+      it 'return a url which replaced of domain' do
+        expect(subject).to eq 'ssh://git@server_domain.sample:10022/test/project.git'
+      end
+    end
+
+    context 'do not have setting_gitlab' do
+      let(:setting_gitlab) { nil }
+      it { expect(subject).to eq 'ssh://git@localhost:10022/test/project.git' }
+    end
+  end
+
+  describe '#web_url_with_domain' do
+    let(:project) { build(:project, web_url: 'https://localhost:119229/test/project', setting_gitlab: setting_gitlab) }
+    subject { project.web_url_with_domain }
+
+    context 'have setting_gitlab with domain setting' do
+      let(:setting_gitlab) { create(:setting_gitlab, base_url: 'http://server_domain.sample:119229/') }
+      it 'return a url which replaced of domain' do
+        expect(subject).to eq 'https://server_domain.sample:119229/test/project'
+      end
+    end
+
+    context 'do not have setting_gitlab' do
+      let(:setting_gitlab) { nil }
+      it { expect(subject).to eq 'https://localhost:119229/test/project' }
+    end
+  end
+
 end
