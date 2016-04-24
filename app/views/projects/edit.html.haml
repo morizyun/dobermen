@@ -3,7 +3,7 @@
 %table.table.table-bordered.table-striped
   %tr
     %th URL
-    %td= link_to @project.web_url, @project.web_url,target: '_blank'
+    %td= link_to @project.web_url_with_domain, @project.web_url_with_domain,target: '_blank'
   %tr
     %th Last Activity
     %td= l(@project.last_activity_at, format: :long)
@@ -24,19 +24,7 @@
   - if @project.brakeman_json.try(:has_warning?)
     %tr
       %th Brakeman Warnings
-      %td
-        %table.table.table-bordered
-          %tr
-            %th Confidence
-            %th Type
-            %th Message
-            %th Link
-          - @project.brakeman_json.warnings.each do |warn|
-            %tr{ class: warn.danger? ? 'bg-danger' : '' }
-              %th= warn.confidence
-              %td= warn.type
-              %td= link_to warn.message, warn.reference_url, target: '_blank'
-              %td= link_to warn.path, "#{@project.web_url}/tree/master/#{warn.path}", target: '_blank'
+      %td= cell(:project, @project).(:warn_table)
   %tr
     %th Email for notification
     %td= render 'form'

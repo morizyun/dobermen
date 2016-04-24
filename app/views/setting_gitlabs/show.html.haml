@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Base url:
+  = @setting_gitlab.base_url
+%p
+  %b Ssh key:
+  = @setting_gitlab.ssh_key
+%p
+  %b Private token:
+  = @setting_gitlab.private_token
+
+= link_to 'Edit', edit_setting_gitlab_path(@setting_gitlab)
+\|
+= link_to 'Back', setting_gitlabs_path

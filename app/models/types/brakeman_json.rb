@@ -53,9 +53,14 @@ class BrakemanJson
       @json[:confidence]
     end
 
-    # High => true, Medium, Low => false
-    def danger?
+    # High => true, else => false
+    def confidence_high?
       @json[:confidence] == 'High'
+    end
+
+    # Medium => true, else => false
+    def confidence_medium?
+      @json[:confidence] == 'Medium'
     end
   end
 

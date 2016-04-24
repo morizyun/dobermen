@@ -2,7 +2,6 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: [:edit, :update]
 
   # GET /projects
-  # GET /projects.json
   def index
     @projects = Project.active_order
   end
@@ -12,7 +11,6 @@ class ProjectsController < ApplicationController
   end
 
   # PATCH/PUT /projects/1
-  # PATCH/PUT /projects/1.json
   def update
     respond_to do |format|
       if @project.update(project_params)
@@ -24,9 +22,12 @@ class ProjectsController < ApplicationController
   end
 
   private
+  # ------------------------------------------------------------------
+  # Private Methods
+  # ------------------------------------------------------------------
   # Use callbacks to share common setup or constraints between actions.
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find_by_id!(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
