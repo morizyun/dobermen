@@ -68,7 +68,11 @@ RSpec.describe BrakemanJson::Warn do
     it { expect(subject.confidence).to eq 'High' }
   end
 
-  describe '#danger?' do
-    it { expect(subject.danger?).to be_truthy }
+  describe '#confidence_high?' do
+    it { expect(subject.confidence_high?).to be_truthy }
+  end
+
+  describe '#confidence_medium?' do
+    it { expect(subject.confidence_medium?).to be_falsey }
   end
 end

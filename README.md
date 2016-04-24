@@ -24,6 +24,10 @@ bundle exec rake git:gitlab_all_repos
 bundle exec rake git:refresh_projects
 ```
 
+## Code Status
+
+[![Build Status](https://travis-ci.org/morizyun/dobermen.svg?branch=features%2Fadd_travis_ci_settings)](https://travis-ci.org/morizyun/dobermen)
+
 ---
 
 Things you may want to cover:
