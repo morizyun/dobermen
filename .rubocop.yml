@@ -1,0 +1,17 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - bin/**/*
+    - config/boot.rb
+    - db/schema.rb
+    - script/**/*
+    - tmp/**/*
+    - vendor/**/*
+    - Rakefile
+    - Gemfile
+
+Rails:
+  Enabled: true
+
+Metrics/ClassLength:
+  Max: 100
