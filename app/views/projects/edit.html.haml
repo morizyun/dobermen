@@ -1,9 +1,9 @@
-%h1= "#{@project.path_with_namespace} - detail"
+%h1 "#{@project.path_with_namespace} - detail"
 
 %table.table.table-bordered.table-striped
   %tr
     %th URL
-    %td= link_to @project.web_url_with_domain, @project.web_url_with_domain,target: '_blank'
+    %td= link_to @project.web_url_with_domain, @project.web_url_with_domain, target: '_blank'
   %tr
     %th Last Activity
     %td= l(@project.last_activity_at, format: :long)
@@ -24,7 +24,7 @@
   - if @project.brakeman_json.try(:has_warning?)
     %tr
       %th Brakeman Warnings
-      %td= cell(:project, @project).(:warn_table)
+      %td= cell(:project, @project).call(:warn_table)
   %tr
     %th Email for notification
     %td= render 'form'

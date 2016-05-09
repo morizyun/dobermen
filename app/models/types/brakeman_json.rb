@@ -99,7 +99,7 @@ class BrakemanJson
   private
 
   def _warnings
-    Array(@json[:warnings]).map { |_| Warn.new(_) }.presence || []
+    Array(@json[:warnings]).map { |warn| Warn.new(warn) }.presence || []
   end
 
 end

@@ -8,7 +8,7 @@ namespace :db do
 
     File.open(file, 'r') do |f_in|
       buf = f_in.read.gsub(/^\s*SECURE_SALT:\s*\n?$/, "SECURE_SALT: #{SecureRandom.hex(64)}\n")
-      File.open(file, 'w') { |_| _.write(buf) }
+      File.open(file, 'w') { |f| f.write(buf) }
     end
   end
 end

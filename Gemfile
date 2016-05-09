@@ -75,9 +75,6 @@ gem 'hashie'
 gem 'cells'
 gem 'cells-haml'
 
-# Table(Migration) Comment
-gem 'migration_comments'
-
 # Exception Notifier
 gem 'exception_notification'
 
@@ -89,9 +86,6 @@ gem 'gitlab'
 
 # configuration using ENV
 gem 'figaro'
-
-# A static analysis security vulnerability scanner
-gem 'brakeman'
 
 # Universal capture of stdout and stde
 gem 'systemu'
@@ -108,11 +102,21 @@ group :development do
   # help to kill N+1
   gem 'bullet'
 
+  # Syntax Checker
+  # hook event pre-commit, pre-push
+  gem 'overcommit', require: false
+
+  # A static analysis security vulnerability scanner
+  gem 'brakeman', require: false
+
+  # Syntax checker for HAML
+  gem 'haml-lint', require: false
+
+  # Syntax checker for CSS
+  gem 'ruby_css_lint', require: false
+
   # A Ruby static code analyzer
   gem 'rubocop', require: false
-
-  # Rack Profiler
-  # gem 'rack-mini-profiler'
 end
 
 group :development, :test do

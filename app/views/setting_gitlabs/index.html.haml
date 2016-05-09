@@ -9,7 +9,7 @@
 
   %tbody
     - @setting_gitlabs.each do |setting_gitlab|
-      = cell(:setting_gitlab, setting_gitlab).(:table_tr)
+      = cell(:setting_gitlab, setting_gitlab).call(:table_tr)
 
 %br
 

@@ -22,9 +22,9 @@ RSpec.describe ProjectsController, :type => :controller do
 
     context 'When not having project' do
       it 'assigns the requested project as @project' do
-        expect{
+        expect do
           process :edit, method: :get, params: { id: 999 }
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        end.to raise_error(ActiveRecord::RecordNotFound)
         # expect(response.status).to eq(404)
       end
     end

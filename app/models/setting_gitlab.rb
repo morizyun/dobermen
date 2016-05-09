@@ -2,7 +2,7 @@ class SettingGitlab < ApplicationRecord
   # ------------------------------------------------------------------
   # Constants
   # ------------------------------------------------------------------
-  PER_PAGE = 10.freeze
+  PER_PAGE = 10
 
   # ------------------------------------------------------------------
   # Attributes
@@ -26,7 +26,7 @@ class SettingGitlab < ApplicationRecord
   end
 
   # ------------------------------------------------------------------
-  # Public Instance Methods
+  # Instance Methods
   # ------------------------------------------------------------------
   # Get all GitLab Projects
   # @return [Array<Gitlab::ObjectifiedHash>]
@@ -41,7 +41,7 @@ class SettingGitlab < ApplicationRecord
   # Return endpoint in GitLab
   # @return [String]
   def endpoint
-    "#{base_url}#{base_url =~ /\/$/ ?  '' : '/'}/api/v3"
+    "#{base_url}#{base_url =~ /\/$/ ? '' : '/'}/api/v3"
   end
 
   # Return domain name in GitLab
