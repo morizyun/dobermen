@@ -43,7 +43,7 @@ Rails.application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
-  # Bulletの設定
+  # N+1 problem
   config.after_initialize do
     Bullet.enable = true # enable Bullet gem, otherwise do nothing
     Bullet.alert = true # pop up a JavaScript alert in the browser

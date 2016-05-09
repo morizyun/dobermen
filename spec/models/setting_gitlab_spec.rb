@@ -27,11 +27,11 @@ RSpec.describe SettingGitlab, type: :model do
     subject { create(:setting_gitlab, base_url: url).base_url }
     context 'has last slash' do
       let(:url) { 'http://example.com/' }
-      it { is_expected.to eq 'http://example.com/'  }
+      it { is_expected.to eq 'http://example.com/' }
     end
     context 'has not last slash' do
       let(:url) { 'http://example.com' }
-      it { is_expected.to eq 'http://example.com/'  }
+      it { is_expected.to eq 'http://example.com/' }
     end
   end
 

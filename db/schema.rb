@@ -30,10 +30,9 @@ ActiveRecord::Schema.define(version: 20160417032732) do
     t.string   "email",                            comment: "Notification to project owner"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.index ["setting_gitlab_id"], name: "index_projects_on_setting_gitlab_id", using: :btree
+    t.index ["web_url"], name: "index_projects_on_web_url", unique: true, using: :btree
   end
-
-  add_index "projects", ["setting_gitlab_id"], name: "index_projects_on_setting_gitlab_id", using: :btree
-  add_index "projects", ["web_url"], name: "index_projects_on_web_url", unique: true, using: :btree
 
   create_table "setting_gitlabs", force: :cascade do |t|
     t.string   "base_url",      null: false, comment: "Base url in your GitLab"
@@ -41,9 +40,8 @@ ActiveRecord::Schema.define(version: 20160417032732) do
     t.string   "private_token", null: false, comment: "Private token for accessing your GitLab API"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["base_url"], name: "index_setting_gitlabs_on_base_url", unique: true, using: :btree
   end
-
-  add_index "setting_gitlabs", ["base_url"], name: "index_setting_gitlabs_on_base_url", unique: true, using: :btree
 
   create_table "settings", force: :cascade do |t|
     t.string   "email",      null: false, comment: "Notification to all project information"

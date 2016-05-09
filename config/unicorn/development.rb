@@ -8,11 +8,11 @@ stdout_path File.expand_path('log/development.log', ENV['RAILS_ROOT'])
 
 preload_app true
 
-before_fork do |server, worker|
+before_fork do |_server, _worker|
   ENV['BUNDLE_GEMFILE'] = "#{ENV['RAILS_ROOT']}/Gemfile"
-  defined?(ActiveRecord::Base) and ActiveRecord::Base.connection.disconnect!
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.connection.disconnect!
 end
 
-after_fork do |server, worker|
-  defined?(ActiveRecord::Base) and ActiveRecord::Base.establish_connection
+after_fork do |_server, _worker|
+  defined?(ActiveRecord::Base) && ActiveRecord::Base.establish_connection
 end
